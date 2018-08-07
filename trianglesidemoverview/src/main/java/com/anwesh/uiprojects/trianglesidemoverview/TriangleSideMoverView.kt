@@ -4,6 +4,7 @@ package com.anwesh.uiprojects.trianglesidemoverview
  * Created by anweshmishra on 07/08/18.
  */
 
+import android.app.Activity
 import android.view.View
 import android.view.MotionEvent
 import android.content.Context
@@ -25,7 +26,7 @@ fun Canvas.drawTSMNode(i : Int, scale : Float, paint : Paint) {
     save()
     translate((w/2) + (w / 2 + size) * factor * point.y, hGap * i + hGap/2)
     rotate(90f * factor * point.x)
-    paint.color = Color.WHITE
+    paint.color = Color.parseColor("#1565C0")
     val path : Path = Path()
     path.moveTo(-size/2, size/2)
     path.lineTo(size/2, size/2)
@@ -188,6 +189,14 @@ class TriangleSideMoverView(ctx : Context) : View(ctx) {
             ltsm.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+        fun create(activity : Activity) : TriangleSideMoverView {
+            val view : TriangleSideMoverView = TriangleSideMoverView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }

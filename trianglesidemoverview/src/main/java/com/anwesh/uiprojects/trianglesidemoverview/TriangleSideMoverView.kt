@@ -166,4 +166,26 @@ class TriangleSideMoverView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : TriangleSideMoverView) {
+
+        val animator : Animator = Animator(view)
+        val ltsm : LinkedTSM = LinkedTSM(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#212121"))
+            ltsm.draw(canvas, paint)
+            animator.animate {
+                ltsm.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            ltsm.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }

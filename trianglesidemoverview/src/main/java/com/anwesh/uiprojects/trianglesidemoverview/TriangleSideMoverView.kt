@@ -7,8 +7,32 @@ package com.anwesh.uiprojects.trianglesidemoverview
 import android.view.View
 import android.view.MotionEvent
 import android.content.Context
-import android.graphics.Paint
-import android.graphics.Canvas
+import android.graphics.*
+
+val nodes : Int = 5
+
+fun Float.triBisect() : PointF {
+    return PointF(Math.min(0.5f, this) * 2, Math.min(0.5f, Math.max(0f, this - 0.5f)) * 2)
+}
+
+fun Canvas.drawTSMNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val hGap : Float = h / nodes
+    val size : Float = hGap/3
+    val point : PointF = scale.triBisect()
+    val factor = 1 - 2 * (i % 2)
+    save()
+    translate((w/2) + (w / 2 + size) * factor * point.y, hGap * i + hGap/2)
+    rotate(90f * factor * point.x)
+    paint.color = Color.WHITE
+    val path : Path = Path()
+    path.moveTo(-size/2, size/2)
+    path.lineTo(size/2, size/2)
+    path.lineTo(0f, -size/2)
+    drawPath(path, paint)
+    restore()
+}
 
 class TriangleSideMoverView(ctx : Context) : View(ctx) {
 
@@ -73,5 +97,5 @@ class TriangleSideMoverView(ctx : Context) : View(ctx) {
                 view.postInvalidate()
             }
         }
-    }
+    }  
 }
